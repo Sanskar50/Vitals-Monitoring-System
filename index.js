@@ -1,12 +1,17 @@
 const express = require('express');
 const path = require('path');
+const quescontroller = require('./controllers/model')
 
 const app = express();
+
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.post('/ask', quescontroller.model);
 
 app.use('/vitals',(req,res,next)=>{
     res.render('tabs/vitals',{
@@ -31,7 +36,6 @@ app.use('/',(req,res,next)=>{
         pageTitle:'Home Page',
     });
 })
-
 
 
 app.listen(3000);
