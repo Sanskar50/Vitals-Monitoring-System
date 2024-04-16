@@ -1,6 +1,6 @@
 const { HfInference } = require('@huggingface/inference');
 
-const hf = new HfInference('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');
+const hf = new HfInference('HF_TOKEN');
 
 exports.model = (req, res, next) => {
     console.log("Working!");
