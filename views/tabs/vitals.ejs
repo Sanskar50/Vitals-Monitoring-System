@@ -1,76 +1,92 @@
 <%- include('../includes/nav.ejs') %>
 <div class="container">
-    <div class="circle">10</div>
-    <div class="circle">20</div>
-    <div class="circle">15</div>
-    <div class="circle">7</div>
+  <div class="circle"><%= data.HeartRate%></div>
+  <div class="circle"><%= data.SpO2 %></div>
+  <div class="circle"><%= data.Temp %></div>
 </div>
 <div class="sensors">
-    <p class="s1">Body Temperature</p>
-    <p class="s2">SPO2</p>
-    <p class="s3">Heart Rate</p>
-    <p class="s4">Blood Pressure</p>
+  <p class="s3">Heart Rate</p>
+  <p class="s2">SPO2</p>
+  <p class="s1">Temperature</p>
 </div>
 
 <div class="charts">
-
-<div class="bar">
+  <div class="bar">
     <canvas id="barChart"></canvas>
   </div>
 
   <div class="pie">
     <canvas id="pieChart"></canvas>
   </div>
-
 </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
 
-  <script>
-    const ctx = document.getElementById('barChart');
-  
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Body Temperature', 'SPO2', 'Heart Rate', 'Blood Pressure'],
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  async function getdata(){
+  await fetch('/data')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.Temp);
+        console.log(data.SpO2);
+        console.log(data.HeartRate);
+        const ctx = document.getElementById('barChart');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Heart Rate','SPO2','Body Temperature'],
+                datasets: [{
+                    label: 'Sensor Value',
+                    data: [data.HeartRate,data.SpO2,data.Temp],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctx1 = document.getElementById('pieChart');
+
+new Chart(ctx1, {
+    type: 'pie',
+    data: {
+        labels: [
+        'Heart Rate','SPO2','Body Temperature'
+        ],
         datasets: [{
-          label: 'Sensor Value',
-          data: [10,20,15,7],
-          borderWidth: 1
+            label: 'Sensor Value',
+            data: [data.HeartRate,data.SpO2,data.Temp],
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(0, 255, 0)',
+            ],
+            hoverOffset: 4
         }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    },
+})
+    })
+    .catch(error => console.log('Error fetching data:', error));
+}
 
-     const ctx1 = document.getElementById('pieChart');
-  
-    new Chart(ctx1, {
-      type: 'pie',
-      data: {
-  labels: [
-  'Body Temperature', 'SPO2', 'Heart Rate', 'Blood Pressure'
-  ],
-  datasets: [{
-    label: 'Sensor Value',
-    data: [10,20,15,7],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)',
-      'rgb(0, 255, 0)',
-    ],
-    hoverOffset: 4
-  }]
-},
-    });
+getdata();
 
 
-  </script>
+// const refreshInterval = 3000; 
 
-<!--<script src="../../graph.js"></script>
+// function refreshPage() {
+//   location.reload();
+// }
+
+// setTimeout(refreshPage, refreshInterval);
+</script>
+
+

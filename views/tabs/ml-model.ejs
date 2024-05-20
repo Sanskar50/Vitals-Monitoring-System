@@ -2,8 +2,9 @@
 <div class="model">
 
 <div id="response">
-   
+    <!-- Response from ML model will be displayed here -->
 </div>
+
 
 <form action='/ask' method="POST" id="questionForm">
   <input type="text" id="search-input" placeholder="Search..." />
@@ -14,11 +15,10 @@
   document
     .getElementById("questionForm")
     .addEventListener("submit", async function (event) {
-      event.preventDefault();
-      
+      event.preventDefault(); // Prevent the default form submission
       try {
         const question = document.getElementById("search-input").value;
-        console.log(question); 
+        console.log(question); // Log the question for debugging
 
         const response = await fetch('/ask', {
           method: "POST",
@@ -36,9 +36,9 @@
         const data = await response.json();
         console.log(data);
         document.getElementById("response").innerText = "answer:      "+data.answer+'\n'+"score:     "+data.score;
-        document.getElementById("search-input").value = ""; 
+        document.getElementById("search-input").value = ""; // Clear the input field
       } catch (error) {
-        console.log(error);
+        console.log(error); 
       }
     });
 </script>
