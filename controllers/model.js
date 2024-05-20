@@ -1,10 +1,10 @@
 const { HfInference } = require('@huggingface/inference');
 
-const hf = new HfInference('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');
+const hf = new HfInference('');
 
 exports.model = (req, res, next) => {
-    console.log("Working!");
-
+   // console.log("Working!");
+    
     const ques = req.body;
     console.log(ques);
 
